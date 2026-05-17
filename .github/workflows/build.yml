@@ -1,0 +1,31 @@
+name: Build Lua Scripts
+
+on:
+  push:
+    branches:
+      - feature/**
+      - feature*
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Package Lua scripts
+        run: |
+          sudo apt-get install -y p7zip-full
+          7z a -mx=9 lua-scripts.7z *.lua
+          7z a -mx=9 lua-scripts.zip *.lua
+
+      - name: Upload 7z artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: lua-scripts.7z
+          path: lua-scripts.7z
+
+      - name: Upload zip artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: lua-scripts.zip
+          path: lua-scripts.zip
